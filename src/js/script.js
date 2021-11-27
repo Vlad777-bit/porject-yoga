@@ -2,6 +2,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   'use strict';
 
+  // Tabs
+
   const info = document.querySelector('.info-header'),
     tab = document.querySelectorAll('.info-header-tab'),
     tabContent = document.querySelectorAll('.info-tabcontent');
@@ -42,5 +44,61 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         }
       }
-    })
+    });
+
+    // Timer
+
+    const deadLine = '2021-12-27';
+
+    /**
+     * Получем оставшиеся время
+     * @param {string} endTime 
+     * @returns Объект значений
+     */
+    function getRemaingTime(endTime) {
+      const currentTime = new Date(),
+        total = Date.parse(endTime) - Date.parse(currentTime),
+        seconds = Math.floor((total / 1000) % 60),
+        minutes = Math.floor((total / 1000 / 60) % 60),
+        hours = Math.floor(total / (1000 * 60 * 60));
+
+      return {
+        total: total,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+      }
+    }
+
+    /**
+     * Получает элементы со страницы
+     * @param {string} idEl id элемента страницы
+     * @param {string} endTime 
+     */
+    function setClock(idEl, endTime) {
+      const timer = document.getElementById(idEl),
+        hours = timer.querySelector('.hours'),
+        minutes = timer.querySelector('.minutes'),
+        seconds = timer.querySelector('.seconds'),
+        timeInterval = setInterval(updateTimer, 1000);
+
+      /**
+       * Обновляет значение таймера
+       */
+      function updateTimer() {
+        const t = getRemaingTime(endTime);
+          hours.innerText = t.hours < 10 ? `0${t.hours}` : t.hours;
+          minutes.innerText = t.minutes < 10 ? `0${t.minutes}` : t.minutes;
+          seconds.innerText = t.seconds < 10 ? `0${t.seconds}` : t.seconds;
+
+        if (t.total <= 0) {
+          clearInterval(timeInterval);
+          hours.innerText = '00';
+          minutes.innerText = '00';
+          seconds.innerText = '00';
+        }
+      }
+    }
+
+    setClock('timer', deadLine);
 })
