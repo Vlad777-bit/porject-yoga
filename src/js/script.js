@@ -101,4 +101,36 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     setClock('timer', deadLine);
+
+    // Modal window
+
+    const more = document.querySelector('.more'),
+      descrBtnMore = document.querySelectorAll('.description-btn'),
+      overlay = document.querySelector('.overlay'),
+      close = document.querySelector('.popup-close');
+
+    function showModal(el) {
+      el.addEventListener('click', () => {
+        overlay.style.display = 'block';
+        el.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+      })
+    }
+
+    showModal(more);
+
+    function hiddenModal(el) {
+      close.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        el.classList.remove('more-splash');
+        document.body.style.overflow = '';
+      })
+    }
+
+    hiddenModal(more);
+
+    descrBtnMore.forEach(el => {
+      showModal(el);
+      hiddenModal(el);
+    });
 })
