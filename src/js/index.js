@@ -1,6 +1,7 @@
 import Tabs from './components/Tabs.js';
 import Timer from './components/Timer.js';
 import Modal from './components/Modal.js';
+import Form from './components/Form.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -32,4 +33,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const modalModule = new Modal(more, descrBtnMore, overlay, close);
   modalModule.init();
+
+  // FromModal
+
+  const formModal = document.querySelector('.main-form'),
+    inputModal = formModal.querySelectorAll('input');
+
+  const formModuleModal = new Form(formModal, inputModal);
+  formModuleModal.init();
+
+  // Form
+
+  const formEl = document.querySelector('#form'),
+    inputFormEl = formEl.querySelectorAll('input');
+
+  const formModule = new Form(formEl, inputFormEl);
+  formModule.init();
+
 })
