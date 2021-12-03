@@ -28,7 +28,13 @@ export default class Form {
       const statusMessage = this.createElStatusMessage();
       this.form.append(statusMessage);
 
-      this.sendToServer(statusMessage);
+      const json = this.convertToJSON();
+
+      this.sendToServer(json)
+        .then(() => statusMessage.innerText = this.message.loading)
+        .then(() => statusMessage.innerText = this.message.success)
+        .catch(() => statusMessage.innerText = this.message.failure)
+        .finally(() => this.input.forEach(el => el.value = ''))
     });
   }
 
@@ -38,31 +44,29 @@ export default class Form {
     return JSON.stringify(Object.fromEntries(formData));
   }
 
-  sendToServer(statusMessage) {
-    const request = new XMLHttpRequest();
+  sendToServer(data) {
 
-    request.open('POST', 'server.php');
-    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    
-    const json = this.convertToJSON();
-    request.send(json);
+    return new Promise((res, rej) => {
+      const request = new XMLHttpRequest();
 
-    request.addEventListener('readystatechange', () => {
-      if (!request.readyState) {
-        statusMessage.innerText = this.message.failure;
-        return;
-      }
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-      if (request.readyState === 4 && request.status === 200) {
-        statusMessage.innerText = this.message.success;
-        return;
-      }
+      request.addEventListener('readystatechange', () => {
+        if (!request.readyState) {
+          rej();
+        }
 
-      if (request.readyState < 4) {
-        statusMessage.innerText = this.message.loading;
-      }
+        if (request.readyState === 4 && request.status === 200) {
+          res();
+        }
 
-      this.input.forEach(el => el.value = '');
+        if (request.readyState < 4) {
+          res();
+        }
+      })
+
+      request.send(data);
     })
   }
 }
