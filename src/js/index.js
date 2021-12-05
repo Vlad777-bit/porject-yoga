@@ -2,6 +2,7 @@ import Tabs from './components/Tabs.js';
 import Timer from './components/Timer.js';
 import Modal from './components/Modal.js';
 import Form from './components/Form.js';
+import Slider from './components/Slider.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -50,4 +51,14 @@ window.addEventListener('DOMContentLoaded', () => {
   const formModule = new Form(formEl, inputFormEl);
   formModule.init();
 
+  // Slider
+
+  const slides = document.querySelectorAll('.slider-item'),
+    prev = document.querySelector('.prev'),
+    next = document.querySelector('.next'),
+    dotsWrap = document.querySelector('.slider-dots'),
+    dots = document.querySelectorAll('.dot');
+
+  const sliderModule = new Slider(slides, prev, next, dotsWrap, dots);
+  sliderModule.init();
 })
