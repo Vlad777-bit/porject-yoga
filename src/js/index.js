@@ -3,6 +3,7 @@ import Timer from './components/Timer.js';
 import Modal from './components/Modal.js';
 import Form from './components/Form.js';
 import Slider from './components/Slider.js';
+import Calculator from './components/Calculator.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -61,4 +62,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const sliderModule = new Slider(slides, prev, next, dotsWrap, dots);
   sliderModule.init();
+
+  // Calculator
+
+  const countPeople = document.querySelector('#people'),
+    countDays = document.querySelector('#days'),
+    center = document.querySelector('#select'),
+    totalValue = document.querySelector('#total');
+
+  const calculatorModule = new Calculator(countPeople, countDays, center, totalValue);
+  calculatorModule.init();
 })
